@@ -90,9 +90,9 @@ app.use((req,res,next)=>{
 //   res.send(registeredUser);
 // });
 
-app.get("/",wrapAsync( async (req, res,next) => {
-  res.send("Hi, I am root");
-}));
+// app.get("/",wrapAsync( async (req, res,next) => {
+//   res.render("listings/index.ejs");
+// }));
 
 // route for listigs
 app.use("/listings", listingRouter);
