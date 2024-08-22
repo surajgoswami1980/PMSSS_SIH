@@ -1,24 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Wanderlust</title>
-  </head>
-  <body>
-    <h3>Listing Details :</h3>
-    <ul>
-      <li><%= listing.title %></li>
-      <li><%= listing.description %></li>
-      <li>&#8377; <%= listing.price.toLocaleString("en-IN") %></li>
-      <li><%= listing.location %></li>
-      <li><%= listing.country %></li>
-    </ul>
-    <br />
-    <a href="/listings/<%= listing._id %>/edit">Edit this Listing</a>
-    <br /><br />
+<% layout("layouts/boilerplate") %>
+<div class="row my-3">
+  <div class="col-10 offset-3">
+    <h3><%= listing.title %></h3>
+    </div>
+    <div class="card col-8 offset-2" >
+      <img src="<%= listing.image.url %>" class="card-img-top show-img " alt="..." style="height: 400px;">
+      <div class="card-body mt-2">
+        <p class="card-text">
+          <p><b>Owned by : <%= listing.owner.username %></b></p>
+          <p><%= listing.description %><br></p>
+          <p><%= listing.price.toLocaleString("en-IN") %><br></p>
+          <p><%= listing.location %><br></p>
+          <p><%= listing.country %><br></p>
+        </p>
+      </div>
+    </div>
+  </div>
+<% if(currUser && currUser._id.equals(listing.owner._id))  {%>
+<div class=" container row text-center d-flex align-items-center justify-content-around ">
+
+  <div class="col-4  px-2 " >
+    <a href="/listings/<%= listing._id %>/edit" style="margin-left: 7rem; height: 100%; width: 80px; "class="btn btn-dander btn-danger px-2">Edit</a>
+</div>
+<div class="col-4 ">
     <form method="POST" action="/listings/<%=listing._id%>?_method=DELETE">
-      <button>Delete this listing</button>
+      <button class="btn btn-dark">Delete</button>
     </form>
-  </body>
-</html>
+</div>   
+</div> 
+<% }%>
+
+<hr>
+
+   <div class="col-10  offset-1">
+      <h5>Leave a Review</h5>
+      <form action="/listings/<%= listing._id %>/reviews" method="POST" novalidate class="needs-validation">
+        <div class="my-3">
+          <label for="rating" class="form-label">Rating</label>
+          <fieldset class="starability-grow">
+            <input type="radio" id="rate1" name="review[rating]" value="1" checked/>
+            <label for="rate1" title="Terrible">1 star</label>
+        
+            <input type="radio" id="rate2" name="review[rating]" value="2" />
+            <label for="rate2" title="Not good">2 stars</label>
+        
+            <input type="radio" id="rate3" name="review[rating]" value="3" />
+            <label for="rate3" title="Average">3 stars</label>
+        
+            <input type="radio" id="rate4" name="review[rating]" value="4" />
+            <label for="rate4" title="Very good">4 stars</label>
+        
+            <input type="radio" id="rate5" name="review[rating]" value="5" />
+            <label for="rate5" title="Amazing">5 stars</label>
+          </fieldset>
+        </div>
+        
+
+        <div class="my-3">
+          <label for="comment" class="form-label">Comments</label>
+          <textarea id="comment" 
+                    name="review[comment]" 
+                    placeholder="Comments" 
+                    style="border: none; border-bottom: 1px solid black; outline: none; resize: none; height: 30px; text-decoration: none; box-shadow: none; border-radius: 0 !important;" 
+                    class="form-control " required></textarea>
+                  <div class="invalid-feedback">
+                    Comments is Required before Submit
+                  </div>
+
+      </div>
+      
+      <button class="btn btn-outline-dark my-3">Submit</button>
+      </form>
+         
+      <hr>
+      <br>
+    </div>
+    <div class="col-12 my-3 offset-1 row d-flex ">
+      <p class="text-center"><b>All Reviews</b></p>
+      
+      <% for (review of listing.reviews){ %>
+
+        <div class="card col-md-5 mx-2 my-2" style="border: 1px solid black !important; border: 15px;">
+          <div class="card-body p-2">
+            <h5 class="card-title"><%= review.author.username%></h5>
+            <p class="card-text"><%= review.comment  %> </p>
+            <p class="card-text"><p class="starability-result" data-rating="<%= review.rating  %>"></p>  
+            <div class="d-flex justify-content-between ">
+              <% if(currUser && currUser._id.equals(review.author._id))  {%>
+              <form action="/listings/<%= listing._id%>/reviews/<%= review._id%>?_method=DELETE" method="POST">
+                <BUTTON class="card-link btn btn-danger">Delete</BUTTON> 
+              </form> 
+              <%} %>
+            </div>
+          </div>
+
+        </div>
+        <% } %>
+      </ul>
+    </div>
+
+  
