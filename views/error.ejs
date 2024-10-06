@@ -1,8 +1,131 @@
-<% layout("layouts/boilerplate") %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Error Page</title>
+  <style>
+    /* Basic Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    /* Body Styling */
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f0f0f0;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
 
-<div class="alert mt-5 alert-danger d-flex align-items-center" role="alert">
-  <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
-  <div>
-     <div class="alert-heading"><%= message %></div>
+    /* Alert Box Styling */
+    .alert {
+      background-color: #f8d7da;
+      color: #721c24;
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      animation: fadeIn 1s ease-in-out;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .alert svg {
+      fill: #721c24;
+      margin-right: 15px;
+    }
+
+    .alert .content {
+      flex: 1;
+    }
+
+    .alert .alert-heading {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .alert p {
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+
+    .alert hr {
+      border: 0;
+      border-top: 1px solid #f5c6cb;
+      margin: 10px 0;
+    }
+
+    .alert .btn {
+      background-color: #721c24;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      text-decoration: none;
+      display: inline-block;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .alert .btn:hover {
+      background-color: #a71d2a;
+      transform: scale(1.05);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .alert {
+        padding: 15px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .alert svg {
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="alert" role="alert">
+  <svg class="bi" width="30" height="30" role="img" aria-label="Error:">
+    <use xlink:href="#error-fill"/>
+  </svg>
+  <div class="content">
+    <h4 class="alert-heading">Oops! Something went wrong.</h4>
+    <p><%= message %></p>
+    <hr>
+    <p>Please try again later or contact support if the problem persists.</p>
+    <a href="/listings" class="btn">Go to Homepage</a>
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('Error page loaded.');
+    // Add any additional JavaScript here if needed
+  });
+</script>
+
+</body>
+</html>

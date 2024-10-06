@@ -1,51 +1,155 @@
 <% layout("layouts/boilerplate") %>
-    <div class="row my-3">
-      <div class="col-8 offset-2">
-        <h3 class="m">Edit Your Listing</h3>
-        <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" novalidate class="needs-validation"enctype="multipart/form-data" >
-          <div class="mb-3">
-            <label for="title" class="form-label" >Title</label>
-            <input name="listing[title]" value="<%= listing.title %>" type="text"  class="form-control" required />
-            <div class="valid-feedback">Looks good!</div>
-            <div class="invalid-feedback">Required</div>
-          </div>
-          <div class="mb-3">
-            <label for="description" class="form-label"  >Description</label>
-            <textarea name="listing[description]"   class="form-control" required><%= listing.description %></textarea>
-            <div class="valid-feedback">Looks good!</div>
-            <div class="invalid-feedback">Required</div>
-          </div>
-          <div class="mb-3">
-            <h5>original image</h5>
-            <img src="<%=  originalImageUrl%>" style="height: 200px; width:250px" />
-          </div>
-          <div class=" mb-3">
-            <label for="image" class="form-label" >upload image</label>
-            <input name="listing[image]"   type="file" class="form-control"/>
-          </div>
-          <div class="row">
-            <div class="mb-3 col-md-4">
-             <label for="price"  class="form-label" >Price</label>
-             <input name="listing[price]" value="<%= listing.price %>" type="digit" class="form-control" required/>
-             <div class="valid-feedback">Looks good!</div>
-             <div class="invalid-feedback">Required</div>
-             </div>
-             <div class="mb-3 col-md-8">
-               <label for="country" class="form-label"  >Country</label>
-               <input name="listing[country]" value="<%= listing.country %>" type="text" class="form-control"  required/>
-               <div class="valid-feedback">Looks good!</div>
-               <div class="invalid-feedback">Required</div>
-             </div>
-            </div> 
-            <div class="mb-3">
-              <label for="location" class="form-label"  >location</label>
-              <input name="listing[location]" value="<%= listing.location %>" type="text" class="form-control" required/>
-              <div class="valid-feedback">Looks good!</div>
-              <div class="invalid-feedback">Required</div>
-            </div>
-          <br>
-          <button class="btn btn-danger px-5 p-2">Edit</button>
-        </form>
-      </div>
-    </div>
 
+<style>
+  .image-preview-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa;
+    border: 2px dashed #ddd;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    width: 150px;
+    height: 150px;
+    margin: 5px;
+    cursor: pointer;
+  }
+
+  .image-preview-box .plus-icon {
+    font-size: 2rem;
+    color: #ccc;
+    transition: color 0.3s ease;
+  }
+
+  .image-preview-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+
+  .image-preview-box:hover .plus-icon {
+    color: #888;
+  }
+
+  #image-previews {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  input[type="file"] {
+    display: none;
+  }
+</style>
+
+<div class="row my-3">
+  <div class="col-8 offset-2">
+    <h3 class="m">Edit Your Listing</h3>
+    <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" novalidate class="needs-validation" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input name="listing[title]" value="<%= listing.title %>" type="text" class="form-control" required />
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">Required</div>
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea name="listing[description]" class="form-control" required><%= listing.description %></textarea>
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">Required</div>
+      </div>
+      <div class="form-group mb-3">
+        <label for="category" class="form-label">Scholarship Category</label>
+        <select name="listing[category]" class="form-control" required>
+          <option value="">Select Scholarship type</option>
+          <!-- <option value="Phone" <%= listing.category === 'Phone' ? 'selected' : '' %>>Phone</option> -->
+          <option value="WOMEN Scholarship">WOMEN Scholarship</option>
+          <option value="POST METRIC">POST METRIC</option>
+          <option value="MERIT Scholarship">MERIT Scholarship</option>
+          <option value="PRE-METRIC SCHOLARSHIP">PRE-METRIC SCHOLARSHIP</option>
+          <option value="EWS SCHOLARSHIP">EWS SCHOLARSHIP</option>
+          <option value="ST/SC SCHOLARSHIP">ST/SC SCHOLARSHIP</option>
+          <option value="Furnitue">Furnitue</option>
+          <option value="Fitness">Fitness</option>
+          <option value="AC">AC</option>
+          <option value="TV">LED</option>
+
+          <!-- Add more categories as needed -->
+        </select>
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">Required</div>
+      </div>
+      <!-- Original Images -->
+      <div class="mb-3">
+      </div>
+      <div class="form-group mb-3">
+        <label for="images" class="form-label">Upload Images (2 mandatory, 3 optional)</label>
+        <div id="image-previews">
+          <% for (let i = 0; i < 5; i++) { %>
+            <div class="image-preview-box" id="preview<%= i %>" onclick="document.getElementById('image<%= i+1 %>').click();">
+              <% if (i < originalImageUrls.length) { %>
+                <img src="<%= originalImageUrls[i] %>" alt="Current Image" />
+              <% } else { %>
+                <span class="plus-icon">+</span>
+              <% } %>
+            </div>
+          <% } %>
+        </div>
+        <input id="image1" name="listing[images]" type="file" accept="image/*" onchange="previewImage(event, 0)"  />
+        <input id="image2" name="listing[images]" type="file" accept="image/*" onchange="previewImage(event, 1)"  />
+        <input id="image3" name="listing[images]" type="file" accept="image/*" onchange="previewImage(event, 2)" />
+        <input id="image4" name="listing[images]" type="file" accept="image/*" onchange="previewImage(event, 3)" />
+        <input id="image5" name="listing[images]" type="file" accept="image/*" onchange="previewImage(event, 4)" />
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">Required</div>
+      </div>
+      <div class="row">
+        <div class="mb-3 col-md-4">
+          <label for="price" class="form-label">Price</label>
+          <input name="listing[price]" value="<%= listing.price %>" type="number" class="form-control" required />
+          <div class="valid-feedback">Looks good!</div>
+          <div class="invalid-feedback">Required</div>
+        </div>
+        <div class="mb-3 col-md-8">
+          <label for="country" class="form-label">Country</label>
+          <input name="listing[country]" value="<%= listing.country %>" type="text" class="form-control" required />
+          <div class="valid-feedback">Looks good!</div>
+          <div class="invalid-feedback">Required</div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="location" class="form-label">Location</label>
+        <input name="listing[location]" value="<%= listing.location %>" type="text" class="form-control" required />
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">Required</div>
+      </div>
+      <br>
+      <button class="btn btn-danger px-5 p-2">Edit</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  function previewImage(event, index) {
+    const file = event.target.files[0];
+    const previewContainer = document.getElementById(`preview${index}`);
+    
+    if (file) {
+      const reader = new FileReader();
+      
+      reader.onload = function (e) {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+    
+        previewContainer.innerHTML = ''; // Clear previous content (like the plus icon)
+        previewContainer.appendChild(img);
+      };
+      
+      reader.readAsDataURL(file);
+    } else {
+      previewContainer.innerHTML = '<span class="plus-icon">+</span>'; // Reset to plus icon if no file
+    }
+  }
+</script>

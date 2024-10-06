@@ -1,0 +1,158 @@
+<% layout("layouts/boilerplate") %>
+
+<style>
+    .edit-profile-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 2rem;
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .form-label {
+        font-weight: 500;
+    }
+    .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+    }
+    .form-check-input:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+    }
+    .btn-custom {
+        background-color: #007bff;
+        color: #fff;
+    }
+    .btn-custom:hover {
+        background-color: #0056b3;
+    }
+
+    /* Square image upload box */
+    .image-upload-container {
+        position: relative;
+        margin: 0 auto;
+        border-radius: 100%;
+        width: 100px;
+        height: 100px;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        text-align: center;
+        border-radius: 8px;
+        justify-content: center;
+        overflow: hidden;
+        align-items: center;
+    }
+    .image-upload-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 100%;
+    }
+    .image-upload-container .upload-placeholder {
+        font-size: 2rem;
+        color: #007bff;
+        text-align: center;
+    }
+    #profileImage {
+        display: none;
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="edit-profile-container">
+        <h2 class="mb-4 text-center">Edit Profile</h2>
+        <form action="/listings/<%= user._id %>/profile/update?_method=PUT" method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
+            <div class="mb-3 ">
+                <label for="user[image]" class="form-label text-center " style=" margin-left: 40%;">Profile Image</label>
+                <div class="image-upload-container" id="imageUploadContainer">
+                    <% if (originalImageUrl) { %>
+                        <img id="profileImagePreview" src="<%= originalImageUrl %>" alt="Profile Image">
+                    <% } else { %>
+                        <span class="upload-placeholder">+</span>
+                    <% } %>
+                </div>
+                <input type="file" id="profileImage" name="user[image]" accept="image/*">
+                <div class="valid-feedback">Looks good!</div>
+                <div class="invalid-feedback">Please select an image file.</div>
+            </div>
+
+            
+            <div class="mb-3">
+                <label for="user[username]" class="form-label">Username</label>
+                <input type="text" id="username" name="user[username]" class="form-control" value="<%= user.username %>" required>
+                <div class="valid-feedback">Looks good!</div>
+                <div class="invalid-feedback">Please enter a username.</div>
+            </div>
+            <div class="mb-3">
+                <label for="user[email]" class="form-label">Email</label>
+               <input type="email" id="email" name="user[email]" class="form-control" value="<%= user.email %>" required>
+               <div class="valid-feedback">Looks good!</div>
+                <div class="invalid-feedback">Please enter an email.</div>
+            </div>
+            <div class="mb-3">
+                <label for="user[phone]" class="form-label">Phone</label>
+                <input type="text" id="phone" name="user[phone]" class="form-control" value="<%= user.phone %>">
+                <div class="valid-feedback">Looks good!</div>
+                <div class="invalid-feedback">Please enter a valid phone number.</div>
+            </div>
+            <div class="mb-3">
+                <label for="user[address]" class="form-label">Address</label>
+                <input type="text" id="address" name="user[address]" class="form-control" value="<%= user.address %>" required>
+                <div class="valid-feedback">Looks good!</div>
+                <div class="invalid-feedback">Please enter a valid address.</div>
+            </div>
+
+            <!-- Image upload box -->
+
+
+            <button type="submit" class="btn btn-custom">Update Profile</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Image preview logic
+    document.getElementById('imageUploadContainer').addEventListener('click', function() {
+        document.getElementById('profileImage').click();
+    });
+
+    document.getElementById('profileImage').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('profileImagePreview');
+                if (preview) {
+                    preview.src = e.target.result;
+                } else {
+                    const img = document.createElement('img');
+                    img.id = 'profileImagePreview';
+                    img.src = e.target.result;
+                    document.getElementById('imageUploadContainer').innerHTML = '';
+                    document.getElementById('imageUploadContainer').appendChild(img);
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Form validation logic
+    (function () {
+        'use strict';
+        var forms = document.querySelectorAll('form.needs-validation');
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+    })();
+</script>

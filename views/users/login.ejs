@@ -1,24 +1,48 @@
 <% layout("/layouts/boilerplate") %>
 
-<div class="row mt-3">
-    <div class="col-6 offset-3">
-        <form action="/login" method="POST" novalidate class="needs-validation" >
-            <div class="mb-3">
-                <label for="username" class="form-label" >Username</label>
-                <input name="username" placeholder="Enter username"  type="text"  class="form-control " required />
-                <div class="valid-feedback">Looks good!</div>
-                <div class="invalid-feedback">Required</div>
-             </div>
-             
-             <div class="mb-3">
-                <label for="password" class="form-label" >Password</label>
-                <input name="password" placeholder="Enter Password"  type="password"  class="form-control " required />
-                <div class="valid-feedback">Looks good!</div>
-                <div class="invalid-feedback">Required</div>
-             </div>
-             
-             <br>
-             <button class="btn btn-dark ">login</button>
-        </form>
+<style>
+  
+</style>
+<div class="body1 ">
+<div class="login-container">
+    <form action="/login" method="POST" novalidate class="needs-validation" id="loginForm">
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input name="email" id="email" placeholder="Enter username" type="email" class="form-control" required />
+            <div class="valid-feedback">Looks good!</div>
+            <div class="invalid-feedback">Required</div>
+        </div>
+        <div class="mb-3">
+            <label for="role" class="form-label">Role</label>
+            <select name="role" id="role" class="form-control" required>
+                <option value="">Select Role</option>
+                <option value="student">Student</option>
+                <option value="college">College</option>
+                <option value="bank">Bank</option>
+                <option value="admin">Admin</option>
+            </select>
+            <div class="valid-feedback">Looks good!</div>
+            <div class="invalid-feedback">Please select a role.</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input name="password" id="password1" placeholder="Enter Password" type="password" class="form-control" required />
+            <div class="valid-feedback">Looks good!</div>
+            <div class="invalid-feedback">Required</div>
+            <div id="passwordHelp1" class="password-requirements">
+                Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character.
+            </div>
+        </div>
+
+        <button class="btn btn-dark" type="submit">Login</button>
+    </form>
+
+    <div class="create-account d-flex justify-content-between">
+        <span>Not registered? <a href="/signup">Create an account</a></span>
+        <a href="/forgot-password">Forgot your password?</a>
     </div>
+    
+
+</div>
 </div>

@@ -1,0 +1,116 @@
+<% layout("layouts/boilerplate") %>
+ 
+<form method="POST" action="/submitScholarship" novalidate class="needs-validation"  enctype="multipart/form-data">
+    <div class="container1 mt-5">
+        <div id="upload-section" class="form-section ">
+            <h4>Image Upload</h4>
+            <p class="text-muted">Please upload the required documents. You can preview each document after uploading.</p>
+            
+            <div class="row">
+                <!-- Upload Photo -->
+                <div class="col-md-4 mb-4">
+                    <label class="custom-label">Upload Photo <span class="text-danger">*</span></label>
+                    <div class="upload-box" id="photo-box" onclick="document.getElementById('photo-upload').click();">
+                      <input type="file" id="photo-upload" name="images" accept="image/*" required onchange="previewImage(this, 'photo-preview')">
+                      <i class="bi bi-person-circle upload-icon"></i>
+                      <p>Upload Photo</p>
+                      <img id="photo-preview" alt="No image uploaded" class="img-preview">
+                    </div>
+                  </div>
+                
+                <!-- Upload Signature -->
+                <div class="col-md-4 mb-4">
+                    <label class="custom-label">Upload Signature <span class="text-danger">*</span></label>
+                    <div class="upload-box" id="sign-box" onclick="document.getElementById('sign-upload').click();">
+                        <input type="file" id="sign-upload" name="images" accept="image/*" required onchange="previewImage(this, 'sign-preview')">
+                        <i class="bi bi-pen upload-icon"></i>
+                        <p>Upload Signature</p>
+                        <img id="sign-preview" alt="No image uploaded" class="img-preview">
+                        
+                    </div>
+                </div>
+                
+                <!-- Upload 10th Marksheet -->
+                <div class="col-md-4 mb-4">
+                    <label class="custom-label">Upload 10th Marksheet <span class="text-danger">*</span></label>
+                    <div class="upload-box" id="marksheet-10-box" onclick="document.getElementById('marksheet-10-upload').click();">
+                        <input type="file" id="marksheet-10-upload" name="images" accept="image/*"  onchange="previewImage(this, 'marksheet-10-preview')">
+                        <i class="bi bi-file-earmark-text upload-icon"></i>
+                        <p>Upload 10th Marksheet</p>
+                        <img id="marksheet-10-preview" alt="No image uploaded" class="img-preview">
+                     
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <!-- Upload 12th Marksheet -->
+                <div class="col-md-4 mb-4">
+                    <label class="custom-label">Upload 12th Marksheet <span class="text-danger">*</span></label>
+                    <div class="upload-box" id="marksheet-12-box" onclick="document.getElementById('marksheet-12-upload').click();">
+                        <input type="file" id="marksheet-12-upload" name="images" accept="image/*"  onchange="previewImage(this, 'marksheet-12-preview')">
+                        <i class="bi bi-file-earmark-text upload-icon"></i>
+                        <p>Upload 12th Marksheet</p>
+                        <img id="marksheet-12-preview" alt="No image uploaded" class="img-preview">
+                       
+                    </div>
+                </div>
+                
+                <!-- Upload Category Certificate -->
+                <div class="col-md-4 mb-4">
+                    <label class="custom-label">Upload Category Certificate <span class="text-danger">*</span></label>
+                    <div class="upload-box" id="category-certificate-box" onclick="document.getElementById('category-certificate-upload').click();">
+                        <input type="file" id="category-certificate-upload" name="images" accept="image/*"  onchange="previewImage(this, 'category-certificate-preview')">
+                        <i class="bi bi-file-earmark-medical upload-icon"></i>
+                        <p>Upload Category Certificate</p>
+                        <img id="category-certificate-preview" alt="No image uploaded" class="img-preview">
+                       
+                    </div>
+                </div>
+                
+                <!-- Upload Income Certificate -->
+                <div class="col-md-4 mb-4">
+                    <label class="custom-label">Upload Income Certificate <span class="text-danger">*</span></label>
+                    <div class="upload-box" id="income-certificate-box" onclick="document.getElementById('income-certificate-upload').click();">
+                        <input type="file" id="income-certificate-upload" name="images" accept="image/*"  onchange="previewImage(this, 'income-certificate-preview')">
+                        <i class="bi bi-cash-coin upload-icon"></i>
+                        <p>Upload Income Certificate</p>
+                        <img id="income-certificate-preview" alt="No image uploaded" class="img-preview">
+                        
+                    </div>
+                </div>
+                
+                <!-- Upload Bank Passbook -->
+                <div class="col-md-4 mb-4">
+                    <label class="custom-label">Upload Bank Passbook <span class="text-danger">*</span></label>
+                    <div class="upload-box" id="bank-passbook-box" onclick="document.getElementById('bank-upload').click();">
+                        <input type="file" id="bank-upload" name="images" accept="image/*"  onchange="previewImage(this, 'bank-preview')">
+                        <i class="bi bi-file-earmark-richtext upload-icon"></i>
+                        <p>Upload Bank Passbook</p>
+                        <img id="bank-preview" alt="No image uploaded" class="img-preview">
+                       
+                    </div>
+                </div>
+            </div>
+        
+        <div class="d-flex justify-content-between">
+
+            <a href="/submitacedmicdetails"><button type="button" class="btn btn-secondary back-btn">Back</button></a>
+            <button type="submit" class="btn btn-success submit-btn">Submit</button>
+          </div>
+        </div>
+      </div>
+ </form>   
+<script>
+     function previewImage(input, previewId) {
+    const file = input.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById(previewId).src = e.target.result;
+            document.getElementById(previewId).style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+}
+</script>

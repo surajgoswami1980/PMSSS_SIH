@@ -1,0 +1,184 @@
+<% layout("layouts/boilerplate") %>
+<style>
+    /* Profile container styling */
+.profile-container {
+    background-color: #f5f5f5;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 2rem auto;
+    width: 80%;
+    box-sizing: border-box;
+}
+
+/* Profile name and email styling */
+.profile-name {
+    font-size: 1.75rem;
+    font-weight: bold;
+    margin: 0.5rem 0;
+}
+
+.profile-email {
+    font-size: 1.25rem;
+    color: #666;
+}
+
+/* Approval steps container */
+.approval-steps {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    padding: 0 1rem;
+}
+
+/* Individual step styling */
+.step {
+    text-align: center;
+    flex: 1;
+    position: relative;
+}
+
+.step-number {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #28a745;
+    font-weight: bold;
+    margin: 0 auto 0.5rem auto;
+    color: rgb(255, 255, 255);
+    transition: background-color 0.3s ease;
+}
+
+/* Colors based on status */
+.step-number.completed {
+    background-color: #28a745; /* Green for verified (Approved) */
+}
+
+.step-number.pending {
+    background-color: #ffc107; /* Yellow for pending */
+}
+
+.step-number.rejected {
+    background-color: #dc3545; /* Red for rejected */
+}
+
+/* Step content */
+.step-content h3 {
+    font-size: 1.1rem;
+}
+
+.step-content p {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Line between steps */
+.line {
+    height: 4px;
+    width: 50%;
+    background-color: #131212;
+    position: relative;
+    top: -55px; /* Aligns the line to the center of the step number */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .approval-steps {
+        flex-direction: column;
+       
+    }
+
+    .line {
+        width: 4px;
+        height: 100px;
+        position: relative;
+        
+        transform: translateX(0);
+    }
+
+    /* Add spacing between steps for better visibility */
+    .step {
+        margin-bottom: 50px;
+    }
+}
+
+</style>
+<div class="profile-container text-center">
+    <% Scholars.forEach(scholar => { %>
+        <div class="profile-header">
+            <h1 class="profile-name"><%= scholar.personalDetails.fullName %></h1>
+            <p class="profile-email"><%= scholar.academicDetails.institution %></p>
+
+            <div class="profile my-5">
+                <h4>Status of Application-  <%= scholar.scholarshipNumber %></h4>
+            </div>
+
+            <!-- Approval Steps -->
+            <div class="approval-steps">
+                <!-- Step 1: College Approval -->
+                <div class="step">
+                    <div class="step-number bg-success">0</div>
+                    <div class="step-content">
+                        <h3> Form Submitted </h3>
+                        <p>Status: <%= 'Forworded' %></p>
+                    </div>
+                </div>
+                <div class="line"></div>
+                <div class="step">
+                    <div class="step-number <%= scholar.status === 'Pending' ? 'pending' : scholar.status === 'Approved' ? 'completed' : 'rejected' %>">1</div>
+                    <div class="step-content ">
+                        <h3>College Approval</h3>
+                    </div>
+                    <div class="d-flex">
+                        <p>Status: <%= scholar.status === 'Pending' ? 'Pending' : scholar.status === 'Approved' ? 'Verified' : 'Rejected' %></p>
+                    
+                      <% if(scholar.rejectionReason){%>
+                          <span class="text-danger ms-3 " style="font-size: 12px; ">  <%= (scholar.rejectionReason )%></span> 
+                     <%}%> 
+                    </div>    
+
+                </div>
+                
+                <div class="line"></div>
+                
+                <!-- Step 2: Bank Approval -->
+                <div class="step">
+                    <div class="step-number <%= scholar.bankStatus === 'Pending' ? 'pending' : scholar.bankStatus === 'Approved' ? 'completed' : 'rejected' %>">2</div>
+                    <div class="step-content">
+                        <h3>Bank Approval</h3>
+                        <p>Status: <%= scholar.bankStatus === 'Pending' ? 'Pending' : scholar.bankStatus === 'Approved' ? 'Verified' : 'Rejected' %></p>
+                    </div>
+                </div>
+
+                <div class="line"></div>
+
+                <!-- Step 3: Government Approval -->
+                <div class="step">
+                    <div class="step-number <%= scholar.governmentStatus === 'Pending' ? 'pending' : scholar.governmentStatus === 'Approved' ? 'completed' : 'rejected' %>">3</div>
+                    <div class="step-content">
+                        <h3>Government Approval</h3>
+                        <p>Status: <%= scholar.governmentStatus === 'Pending' ? 'Pending' : scholar.governmentStatus === 'Approved' ? 'Verified' : 'Rejected' %> </p>
+                    </div>
+                </div>
+
+                <div class="line"></div>
+
+                <!-- Step 4: Money Received -->
+                <div class="step">
+                    <div class="step-number <%= scholar.moneyReceived ? 'completed' : 'pending' %>">4</div>
+                    <div class="step-content">
+                        <h3>Money Received</h3>
+                        <p>Status: <%= scholar.moneyReceived ? 'Received' : 'Not Received' %></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr><HR>
+    <% }); %>
+   
+</div>

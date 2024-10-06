@@ -1,0 +1,208 @@
+<% layout("layouts/boilerplate") %>
+<style>
+    /* Profile container styling */
+    .profile-container {
+        background-color: #ffffff;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        margin: 2rem auto;
+        width: 80%;
+        max-width: 1200px;
+        box-sizing: border-box;
+        color: #333;
+    }
+
+    /* Profile name and email styling */
+    .profile-name {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin: 0.5rem 0;
+    }
+
+    .profile-section {
+        margin-bottom: 2rem;
+        border-bottom: 1px solid #e0e0e0;
+        padding-bottom: 1rem;
+    }
+
+    .profile-section h2 {
+        font-size: 1.75rem;
+        color: #34495e;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .profile-details {
+        font-size: 1.125rem;
+        color: #555;
+        line-height: 1.6;
+    }
+
+    .profile-details p {
+        margin: 0.5rem 0;
+    }
+
+    .image-container {
+        margin: 1rem 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+    }
+
+    .image-container img {
+        max-width: 300px;
+        max-height: 200px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Button styling */
+    .action-button {
+        background-color: #3498db;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        display: inline-block;
+        margin-top: 1rem;
+        transition: background-color 0.3s ease;
+    }
+
+    .action-button:hover {
+        background-color: #2980b9;
+    }
+
+    .reject-button {
+        background-color: #e74c3c;
+    }
+
+    .reject-button:hover {
+        background-color: #c0392b;
+    }
+
+    /* Rejection reason form styling */
+    .rejection-reason {
+        display: none;
+        margin-top: 1rem;
+        padding: 1rem;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .rejection-reason label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+    }
+
+    .rejection-reason select {
+        width: 100%;
+        padding: 0.5rem;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        font-size: 1rem;
+    }
+</style>
+
+<div class="profile-container">
+    <!-- Personal Details -->
+    <div class="profile-section">
+        <h2>Personal Details</h2>
+        <p class="profile-details">Full Name: <%= scholar.personalDetails.fullName %></p>
+        <p class="profile-details">Email: <%= scholar.personalDetails.email %></p>
+        <p class="profile-details">Date of Birth: <%= scholar.personalDetails.dateOfBirth ? scholar.personalDetails.dateOfBirth.toDateString() : 'N/A' %></p>
+        <p class="profile-details">Phone Number: <%= scholar.personalDetails.phoneNumber %></p>
+        <p class="profile-details">Other Phone Number: <%= scholar.personalDetails.otherPhoneNumber %></p>
+        <p class="profile-details">Mother's Name: <%= scholar.personalDetails.motherName %></p>
+        <p class="profile-details">Father's Name: <%= scholar.personalDetails.fatherName %></p>
+        <p class="profile-details">Address: <%= scholar.personalDetails.address %>, <%= scholar.personalDetails.city %>, <%= scholar.personalDetails.state %> - <%= scholar.personalDetails.zip %></p>
+        <p class="profile-details">Country: <%= scholar.personalDetails.country %></p>
+    </div>
+
+    <!-- Academic Details -->
+    <div class="profile-section">
+        <h2>Academic Details</h2>
+        <p class="profile-details">Institution: <%= scholar.academicDetails.institution %></p>
+        <p class="profile-details">Course: <%= scholar.academicDetails.course %></p>
+        <p class="profile-details">Passing Year: <%= scholar.academicDetails.passingYear %></p>
+        <p class="profile-details">CGPA: <%= scholar.academicDetails.CGPA %></p>
+        <p class="profile-details">Enrollment: <%= scholar.academicDetails.Enrollment %></p>
+        <p class="profile-details">State: <%= scholar.academicDetails.statei %></p>
+        <p class="profile-details">Roll Number: <%= scholar.academicDetails.RollNumber %></p>
+        <p class="profile-details">Matric Marks: <%= scholar.academicDetails.matricMarks %></p>
+        <p class="profile-details">Matric Subjects: <%= scholar.academicDetails.matricSubjects %></p>
+        <p class="profile-details">Matric Passing Year: <%= scholar.academicDetails.passingYear10 %></p>
+        <p class="profile-details">Matric School Name: <%= scholar.academicDetails.schoolname10 %></p>
+        <p class="profile-details">Matric Percentage: <%= scholar.academicDetails.percentage10 %></p>
+        <p class="profile-details">Twelfth Marks: <%= scholar.academicDetails.twelfthMarks %></p>
+        <p class="profile-details">Twelfth Subjects: <%= scholar.academicDetails.twelfthSubjects %></p>
+        <p class="profile-details">Twelfth Passing Year: <%= scholar.academicDetails.passingYear12 %></p>
+        <p class="profile-details">Twelfth School Name: <%= scholar.academicDetails.schoolname12 %></p>
+        <p class="profile-details">Twelfth Percentage: <%= scholar.academicDetails.percentage12 %></p>
+    </div>
+
+    <!-- Bank Details -->
+    <div class="profile-section">
+        <h2>Bank Details</h2>
+        <p class="profile-details">Account Holder Name: <%= scholar.bankDetails.accountHolderName %></p>
+        <p class="profile-details">Account Number: <%= scholar.bankDetails.accountNumber %></p>
+        <p class="profile-details">IFSC Code: <%= scholar.bankDetails.ifscCode %></p>
+        <p class="profile-details">Branch Address: <%= scholar.bankDetails.branchAddress %></p>
+    </div>
+
+    <!-- Images -->
+    <div class="profile-section">
+        <h2>Images</h2>
+        <div class="image-container">
+            <% scholar.images.forEach(image => { %>
+                <img src="<%= image.imageUrl %>" alt="Scholar Image">
+            <% }); %>
+        </div>
+    </div>
+
+    <!-- Status -->
+    <div class="profile-section">
+        <h2>Status</h2>
+        <span><p class="profile-details">Institution Status: <%= scholar.status %> <% if(scholar.rejectionReason){%>
+            ( <%= scholar.rejectionReason %>)
+            <%}%></p> </span>
+        <p class="profile-details">Bank Status: <%= scholar.bankStatus %></p>
+        <p class="profile-details">Government Status: <%= scholar.governmentStatus %></p>
+        <p class="profile-details">Money Received: <%= scholar.moneyRecevied %></p>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="profile-section">
+        <form action="/scholars/<%= scholar._id %>/update-status" method="POST">
+            <button type="submit" name="status" value="Approved" class="action-button">Approve</button>
+            <button type="button" class="action-button reject-button" id="reject-button">Reject</button>
+        </form>    
+        <form action="/scholars/<%= scholar._id %>/reject" method="POST">
+            <!-- Rejection Reason Form -->
+            <div class="rejection-reason" id="rejection-reason">
+                <label for="reason">Reason for Rejection:</label>
+
+                <select name="reason" id="reason">
+                    <option value="Incomplete Information">Incomplete Information</option>
+                    <option value="Documents Not Valid">Documents Not Valid</option>
+                    <option value="Eligibility Criteria Not Met">Eligibility Criteria Not Met</option>
+                    <option value="Other">Other</option>
+                </select>
+                <button type="submit" class="action-button reject-button">Submit Rejection</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById('reject-button').addEventListener('click', function() {
+        document.getElementById('rejection-reason').style.display = 'block';
+    });
+</script>

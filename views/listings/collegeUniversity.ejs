@@ -1,0 +1,81 @@
+<% layout("layouts/boilerplate") %>
+<style>
+    /* Profile container styling */
+    .profile-container {
+        background-color: #f5f5f5;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 2rem auto;
+        width: 80%;
+        box-sizing: border-box;
+    }
+
+    /* Profile name and email styling */
+    .profile-name {
+        font-size: 1.75rem;
+        font-weight: bold;
+        margin: 0.5rem 0;
+    }
+
+    .profile-institution {
+        font-size: 1.25rem;
+        color: #666;
+    }
+
+    .profile-scholarship {
+        font-size: 1.25rem;
+        color: #333;
+    }
+
+    /* Button styling */
+    .check-details-button {
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        display: inline-block;
+        margin-top: 1rem;
+        transition: background-color 0.3s ease;
+    }
+
+    .status-approved {
+        background-color: #28a745;
+    }
+
+    .status-rejected {
+        background-color: #dc3545;
+    }
+
+    .status-pending {
+        background-color: #ffc107;
+    }
+
+    .check-details-button:hover {
+        opacity: 0.8;
+    }
+</style>
+
+<div class="profile-container text-center">
+    <% Scholars.forEach(scholar => { %>
+        <div class="profile-header">
+            <h1 class="profile-name"><%= scholar.personalDetails.fullName %></h1>
+            <p class="profile-scholarship">Scholarship Number: <%= scholar.scholarshipNumber %></p>
+            <p class="profile-institution">Institution: <%= scholar.academicDetails.institution %></p>
+
+            <!-- Button to check details -->
+            <a href="/scholars/<%= scholar._id %>/viewscholars" class="check-details-button bg-primary">Check Details</a>
+            
+            <!-- Status button with conditional class -->
+            <a href="#" class="check-details-button 
+                <%= scholar.status === 'Approved' ? 'status-approved' : '' %>
+                <%= scholar.status === 'Rejected' ? 'status-rejected' : '' %>
+                <%= scholar.status === 'Pending' ? 'status-pending' : '' %>">
+                Status: <%= scholar.status %>
+            </a>
+        </div>
+        <hr>
+    <% }); %>
+</div>

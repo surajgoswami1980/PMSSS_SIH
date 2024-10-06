@@ -1,0 +1,260 @@
+<% layout("layouts/boilerplate") %>
+    
+    <div class="container1 mt-5">
+        <form method="POST" action="/submitacedmicdetails" novalidate class="needs-validation" >
+            <!-- Step 1: Personal Details -->
+            <div id="academic-details" class="form-section">
+                <h4>Academic Details</h4>
+            
+                <!-- Institution and Course -->
+                <div class="row">
+
+                    <!-- Radio Buttons to choose between College and University -->
+                     <div class="d-flex  align-items-center text-center my-3 ">
+                        <label for="type-select" class="form-label m-3">Choose Type:</label>
+                        <input type="radio" name="type" id="college-option" class="ms-3" value="college" onchange="toggleType('college')" checked> <strong>College</strong>
+                        <input type="radio" name="type" id="university-option" class="ms-3" value="university" onchange="toggleType('university')"> <strong>University</strong>
+                    </div>
+                    <!-- State Dropdown (common for both College and University) -->
+                    <label for="state-select" class="form-label">Select State:</label>
+                    <select id="statei" onchange="updateDropdown();" name="academicDetails[statei]" >
+                      <option value="All" >All States</option>
+                      <% states.forEach(state => { %>
+                        <option value="<%= state %>"><%= state %></option>
+                      <% }) %>
+                    </select>
+                    
+                    <!-- College Dropdown (shown when college option is selected) -->
+                    <div id="college-dropdown">
+                      <label for="institution" class="form-label">Select College:</label>
+                      <select id="college-select" name="academicDetails[institution]"  onchange="filterUniversities()">
+                        <option value="All" class="form-control">All Colleges</option>
+                        <% colleges.forEach(college => { %>
+                          <option value="<%= college.Name %>"><%= college.Name %></option>
+                        <% }) %>
+                      </select>
+                    </div>
+
+                   <!-- University Dropdown (shown when university option is selected) -->
+                   <div id="university-dropdown" style="display:none;">
+                     <label for="institution" class="form-label">Select University:</label>
+                     <select id="university-item" name="academicDetails[institution]">
+                       <option value="All" id="university-item">All Universities</option>
+                       <% universities.forEach(university => { %>
+                         <option value="<%= university.Name %>" id="universities-list" data-state="<%= university.state %>" data-college="<%= university.state %>"><%= university.Name %></option>
+                       <% }) %>
+                     </select>
+                   </div>
+
+                   
+                   <!-- Colleges List -->
+                   <div id="colleges-list">
+                     <% colleges.forEach(college => { %>
+                       <div class="college-item" data-state="<%= college.State %>" data-name="<%= college.Name %>">
+                         <!-- You can display the college information here if needed -->
+                       </div>
+                     <% }) %>
+                   </div>
+                   
+                   <!-- Universities List -->
+                   <div id="universities-list" style="display:none;">
+                     <% universities.forEach(university => { %>
+                       <div class="university-item" data-state="<%= university.state %>" data-name="<%= university.Name %>">
+                         <!-- You can display the university information here if needed -->
+                       </div>
+                     <% }) %>
+                   </div>
+                
+                   <div class="col-md-6">
+                    <label for="Enrollment" class="form-label">Enrollment</label>
+                    <input type="text" id="Enrollment" name="academicDetails[Enrollment]" class="form-control" placeholder="Enter Enrollment" required>
+                    <div class="valid-feedback">Looks good!</div>
+                    <div class="invalid-feedback">enrollment are required.</div>
+                </div>
+                <div class="col-md-6">
+                    <label for="RollNumber" class="form-label">College Roll Number</label>
+                    <input type="number" id="matricSubjects" name="academicDetails[RollNumber]" class="form-control" placeholder="Enter Roll NUmber" required>
+                    <div class="valid-feedback">Looks good!</div>
+                    <div class="invalid-feedback">RollNumber are required.</div>
+                </div>
+                <!-- Passing Year and CGPA -->
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <label for="passingYear" class="form-label">Passing Year</label>
+                        <input type="number" id="passingYear" name="academicDetails[passingYear]" class="form-control" placeholder="Enter passing year" required>
+                        <div class="valid-feedback">Looks good!</div>
+                        <div class="invalid-feedback">Passing year is required.</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="marks" class="form-label">CGPA</label>
+                        <input type="number" id="marks" name="academicDetails[CGPA]" class="form-control" placeholder="Enter CGPA" required>
+                        <div class="valid-feedback">Looks good!</div>
+                        <div class="invalid-feedback">CGPA is required.</div>
+                    </div>
+                </div>
+                <hr>
+                <!-- Matric Details (10th grade) -->
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <label for="matricMarks" class="form-label">Matric (10th Grade) Marks</label>
+                        <input type="number" id="matricMarks" name="academicDetails[matricMarks]" class="form-control" placeholder="Enter matric marks" required>
+                        <div class="valid-feedback">Looks good!</div>
+                        <div class="invalid-feedback">Matric marks are required.</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="matricSubjects" class="form-label">Matric Subjects</label>
+                        <input type="text" id="matricSubjects" name="academicDetails[matricSubjects]" class="form-control" placeholder="Enter subjects (comma-separated)" required>
+                        <div class="valid-feedback">Looks good!</div>
+                        <div class="invalid-feedback">Matric subjects are required.</div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <label for="passingYear10" class="form-label">Passing Year</label>
+                        <input type="number" id="passingYear10" name="academicDetails[passingYear10]" class="form-control" placeholder="Enter passing year" required>
+                        <div class="valid-feedback">Looks good!</div>
+                        <div class="invalid-feedback">Passing year is required.</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="schoolname10" class="form-label">Secondary School Name</label>
+                        <input type="text" id="schoolname10" name="academicDetails[schoolname10]" class="form-control" placeholder="Enter School Name" required>
+                        <div class="valid-feedback">Looks good!</div>
+                        <div class="invalid-feedback">school name is required</div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <label for="percentage10" class="form-label">Percentage</label>
+                            <input type="number" id="percentage10" name="academicDetails[percentage10]" class="form-control" placeholder="Enter percentage" min="0" max="100">
+                            <div class="valid-feedback">Looks good!</div>
+                            <div class="invalid-feedback">Percentage must be between 0 and 100.</div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <!-- 12th Grade Details -->
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <label for="twelfthMarks" class="form-label">12th Grade Marks</label>
+                        <input type="number" id="twelfthMarks" name="academicDetails[twelfthMarks]" class="form-control" placeholder="Enter 12th marks" required>
+                        <div class="valid-feedback">Looks good!</div>
+                        <div class="invalid-feedback">12th grade marks are required.</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="twelfthSubjects" class="form-label">12th Grade Subjects</label>
+                        <input type="text" id="twelfthSubjects" name="academicDetails[twelfthSubjects]" class="form-control" placeholder="Enter subjects (comma-separated)" required>
+                        <div class="valid-feedback">Looks good!</div>
+                        <div class="invalid-feedback">12th grade subjects are required.</div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <label for="passingYear12" class="form-label">Passing Year</label>
+                        <input type="number" id="passingYear12" name="academicDetails[passingYear12]" class="form-control" placeholder="Enter passing year" required>
+                        <div class="valid-feedback">Looks good!</div>
+                        <div class="invalid-feedback">Passing year is required.</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="schoolname12" class="form-label">School Name</label>
+                        <input type="text" id="schoolname12" name="academicDetails[schoolname12]" class="form-control" placeholder="Enter School name" required>
+                        <div class="valid-feedback">Looks good!</div>
+                        <div class="invalid-feedback">school name are required.</div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <label for="percentage12" class="form-label">Percentage</label>
+                            <input type="number" id="percentage12" name="academicDetails[percentage12]" class="form-control" placeholder="Enter percentage" min="0" max="100">
+                            <div class="valid-feedback">Looks good!</div>
+                            <div class="invalid-feedback">Percentage must be between 0 and 100.</div>
+                        </div>
+                    </div>
+                </div>
+            
+                <!-- Navigation Buttons -->
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <a href="/apply"><button type="button" class="btn btn-secondary back-btn">Back</button></a>
+                        <button type="submit" class="btn btn-primary next-btn">Next</button>
+                    </div>
+                </div>
+            </div>
+           </div> 
+  
+     </form>       
+   </div>
+
+<script>
+    function toggleType(type) {
+  if (type === 'college') {
+    document.getElementById('college-dropdown').style.display = 'block';
+    document.getElementById('university-dropdown').style.display = 'none';
+    document.getElementById('colleges-list').style.display = 'block';
+    document.getElementById('universities-list').style.display = 'none';
+  } else {
+    document.getElementById('college-dropdown').style.display = 'none';
+    document.getElementById('university-dropdown').style.display = 'block';
+    document.getElementById('colleges-list').style.display = 'none';
+    document.getElementById('universities-list').style.display = 'block';
+  }
+}
+
+// Filter Colleges based on selected state
+function filterColleges() {
+  const state = document.getElementById('state-select').value;
+  const colleges = document.querySelectorAll('.college-item');
+
+  colleges.forEach(college => {
+    if (state === 'All' || college.dataset.state === state) {
+      college.style.display = 'block';
+    } else {
+      college.style.display = 'none';
+    }
+  });
+}
+
+// Filter Universities based on selected state and college
+function filterUniversities() {
+  const college = document.getElementById('college-select').value;
+  const state = document.getElementById('state-select').value;
+  const universities = document.querySelectorAll('.university-item');
+
+  universities.forEach(university => {
+    if ((college === 'All' || university.dataset.name === college) &&
+        (state === 'All' || university.dataset.state === state)) {
+      university.style.display = 'block';
+    } else {
+      university.style.display = 'none';
+    }
+  });
+}
+
+// Update College or University dropdown when state changes
+function updateDropdown() {
+  const type = document.querySelector('input[name="type"]:checked').value;
+  if (type === 'college') {
+    updateCollegeDropdown();
+  } else {
+    filterUniversities();
+  }
+}
+
+// Update College Dropdown based on selected state
+function updateCollegeDropdown() {
+  const state = document.getElementById('state-select').value;
+  const collegeSelect = document.getElementById('college-select');
+  const colleges = document.querySelectorAll('.college-item');
+  
+  // Clear previous options
+  collegeSelect.innerHTML = '<option value="All">All Colleges</option>';
+
+  // Add new options
+  colleges.forEach(college => {
+    if (state === 'All' || college.dataset.state === state) {
+      const option = document.createElement('option');
+      option.value = college.dataset.name;
+      option.textContent = college.dataset.name;
+      collegeSelect.appendChild(option);
+    }
+  });
+}
+
+</script>

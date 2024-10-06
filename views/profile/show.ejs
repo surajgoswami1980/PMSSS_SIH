@@ -1,0 +1,120 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="profile-container text-center">
+    <!-- Profile Photo and Details -->
+    <div class="profile-header">
+        <% if (user.image && user.image.url) { %>
+            <img src="<%= user.image.url %>" alt="<%= user.username %>" class="profile-photo">
+        <% } else { %>
+            <div class="profile-photo default-photo"><i class="fa fa-user"></i></div>
+        <% } %>
+        <h1 class="profile-name"><%= user.username %></h1>
+        <p class="profile-email"><%= user.email %></p>
+
+        
+        <!-- Conditionally display Edit and Delete buttons -->
+        <% if (currUser && currUser._id.equals(user._id)) { %>
+            <div class="profile-actions">
+                <a href="/listings/<%= user._id %>/profile/edit" class="btn btn-primary">Edit Profile</a>
+                <a href="/listings/<%= user._id %>/profile/delete" class="btn btn-danger">Delete Account</a>
+            </div>
+        <% } %>
+    </div>
+
+    <!-- Additional Profile Information (if any) -->
+    <div class="profile-info mt-4">
+        <h2>Additional Information</h2>
+        
+        <p><strong>Role:</strong> <%= user.role%></p>
+        <p><strong>Phone:</strong> <%= user.phone %></p>
+        <p><strong>Address:</strong> <%= user.address %></p>
+
+        <!-- Add more fields as needed -->
+    </div>
+</div>
+
+<style>
+/* Profile container styling */
+.profile-container {
+    background-color: #f5f5f5;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 2rem auto;
+    max-width: 600px;
+}
+
+/* Profile photo styling */
+.profile-photo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid #007bff;
+    margin-bottom: 1rem;
+}
+
+.default-photo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: #666;
+    border: 5px solid #007bff;
+}
+
+/* Profile name and email styling */
+.profile-name {
+    font-size: 1.75rem;
+    font-weight: bold;
+    margin: 0.5rem 0;
+}
+
+.profile-email {
+    font-size: 1.25rem;
+    color: #666;
+}
+
+/* Profile actions styling */
+.profile-actions {
+    margin-top: 1rem;
+}
+
+.profile-actions a {
+    margin: 0 0.5rem;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border-radius: 4px;
+    color: #fff;
+    transition: background-color 0.3s;
+}
+
+.profile-actions .btn-primary {
+    background-color: #007bff;
+}
+
+.profile-actions .btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.profile-actions .btn-danger {
+    background-color: #dc3545;
+}
+
+.profile-actions .btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* Additional info styling */
+.profile-info {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 2rem;
+}
+</style>

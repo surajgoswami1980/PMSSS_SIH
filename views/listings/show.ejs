@@ -1,102 +1,504 @@
 <% layout("layouts/boilerplate") %>
-<div class="row my-3">
-  <div class="col-10 offset-3">
-    <h3><%= listing.title %></h3>
+  
+
+<style>
+ /* Container for the image gallery */
+/* Container for the image gallery */
+.container {
+  position: relative;
+  width: 100%;
+ 
+  overflow: hidden; /* Hide any overflowed parts */
+/* Center vertically */
+}
+
+/* Image styling */
+.mySlides {
+  width: 100%; /* Responsive width */
+  height: 100%; /* Full height of the container */
+  object-fit: cover; /* Ensure image covers the container */
+  
+}
+
+
+/* Hide the images by default */
+
+
+/* Image styling to maintain aspect ratio */
+.mySlides img {
+  width: 100%;
+  height: auto; /* Maintain aspect ratio */
+  display: block; /* Remove inline spacing */
+}
+
+/* Thumbnail image styling */
+.cursor {
+  cursor: pointer;
+}
+
+/* Next & previous buttons */
+.prev,
+.next {
+  cursor: pointer;
+  position: absolute;
+  top: 38%;
+  text-decoration: none;
+  width: auto;
+  padding: 16px;
+  margin-top: -22px;
+  color: rgb(12, 11, 11);
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 3px;
+  user-select: none;
+}
+
+.next {
+  right: 0;
+}
+
+.prev:hover,
+.next:hover {
+  background-color: rgba(231, 235, 237, 0.923);
+}
+
+/* Thumbnail image column */
+.column {
+  float: left;
+  width: 16.66%;
+}
+
+/* Thumbnail image styling */
+.column img {
+  opacity: 0.6;
+}
+
+.active,
+.demo:hover {
+  opacity: 1;
+}
+
+/* Caption container */
+.caption-container {
+  text-align: center;
+  background: #222;
+  color: #f1f1f1;
+  padding: 8px 12px;
+}
+
+/* Responsive Design */
+@media (max-width: 767.98px) {
+  .mySlides {
+    max-height: 300px; /* Adjust for smaller screens */
+  }
+
+  .column {
+    width: 25%;
+  }
+}
+
+
+  /* General Card Styles */
+  .starability-result{
+       position: absolute;
+  }
+  .review-card {
+  position: relative; /* Allows absolute positioning of the date */
+  background: #fff;
+  padding: 1rem;
+  border-bottom: 1px solid black;
+}
+
+.date {
+  position: absolute;
+  bottom: 10px; /* Distance from the bottom */
+  right: 10px; /* Distance from the right */
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.review-card .comment {
+  margin-top: .5rem;
+}
+
+.review-card .review-comment {
+  margin-top: 1rem;
+}
+
+@media (max-width: 767.98px) {
+  .review-card .date {
+    bottom: 5px;
+    right: 5px;
+  }
+}
+
+  .card {
+    border: 1px solid #dee2e6;
+    border-radius: .25rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Image Styling */
+  .card-img-top {
+    object-fit: cover;
+  }
+  
+  /* Review Section Styling */
+  .review-section {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: .25rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Review Form */
+  .review-section textarea {
+    resize: vertical;
+    height: 100px;
+  }
+  
+  /* Review Card Styles */
+  /* Review Card Styles */
+  .review-card {
+    background: #fff;
+    padding: 1rem;
+   
+  border-bottom: 1px solid black;
+  }
+  
+  /* Profile Image and Username */
+  .review-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .profile-img {
+    border-radius: 50%;
+    margin-bottom: .5rem;
+  }
+  
+  .review-info {
+    text-align: center;
+  }
+  
+  .review-info h6 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+  
+  .review-info p {
+    margin: 0;
+    color: #f5c518; /* Star color */
+  }
+  
+  /* Comment Section */
+  .review-comment {
+    margin-top: .5rem;
+  }
+  
+  .review-comment p {
+    margin: 0;
+    color: #555;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 767.98px) {
+    .review-profile {
+      align-items: start;
+    }
+  
+  }
+
+  .profile-img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
+
+/* Default Profile Icon */
+.profile-icon {
+  font-size: 50px;
+  color: #6c757d;
+}
+
+
+
+/* Optional: If using a font icon, adjust font-size */
+.starability-result.small-stars {
+  font-size: 5px !important; /* Modify this value to adjust star size */
+}
+
+</style>  
+
+<div class="container my-4">
+  <!-- Listing Title and Card -->
+  <div class="row mb-4">
+    <div class="col-12 text-center mb-3">
+      <h3><%= listing.title %></h3>
     </div>
-    <div class="card col-8 offset-2" >
-      <img src="<%= listing.image.url %>" class="card-img-top show-img " alt="..." style="height: 400px;">
-      <div class="card-body mt-2">
-        <p class="card-text">
-          <p><b>Owned by : <%= listing.owner.username %></b></p>
-          <p><%= listing.description %><br></p>
-          <p><%= listing.price.toLocaleString("en-IN") %><br></p>
-          <p><%= listing.location %><br></p>
-          <p><%= listing.country %><br></p>
-        </p>
+    <div class="col-md-12 mb-2">
+      <div class="card">
+        <!-- Carousel for Images -->
+<!-- Image Gallery Container -->
+<div class="container">
+  <!-- Full-width images with number text -->
+  <% listing.images.forEach((image, index) => { %>
+    <div class="mySlides">
+      <div class="numbertext"><%= index + 1 %> / <%= listing.images.length %></div>
+      <img src="<%= image.url %>" style="width:100%; height: 400px;
+  border-radius: 15px;">
+    </div>
+  <% }) %>
+
+  <!-- Next and previous buttons -->
+  <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+  <a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+  <!-- Image text -->
+  <div class="caption-container bg-white m-2 rounded text-dark">
+    <p id="caption"></p>
+  </div>
+
+  <!-- Thumbnail images -->
+  <div class="row">
+    <% listing.images.forEach((image, index) => { %>
+      <div class="column">
+        <img class="demo cursor" src="<%= image.url %>" style="width:100px; height: 80px;" onclick="currentSlide(`<%= index + 1 %>`)" alt="<%= listing.title %>">
+        
+      </div>
+    <% }) %>
+  </div>
+</div>
+
+        <div class=" card-body">
+          <div class="container p-3">
+          <h5 class="card-title"><%= listing.title %></h5>
+          <p class="card-text"><b>Posted by:</b> <%= listing.owner.username %></p>
+          <p class="card-text"><b>Description:</b> <%= listing.description %></p>
+          <p class="card-text"><b>Scholarship Amount: </b> <%= listing.price.toLocaleString("en-IN") %>/month</p>
+          <p class="card-text"><strong>Scholarship Category:</strong> <%= listing.category %></p>
+          <% if(currUser && currUser._id.equals(listing.owner._id)) { %>
+            <div class="d-flex justify-content-between mt-3">
+              <a href="/listings/<%= listing._id %>/edit" class="btn btn-warning">Edit</a>
+              <form method="POST" action="/listings/<%=listing._id%>?_method=DELETE">
+                <button class="btn btn-danger">Delete</button>
+              </form>
+            </div>
+          <% }else{ %>
+          
+           <form method="GET" action="/apply">
+             <button class="btn btn-success">Apply Now</button>
+           </form>
+          <% } %>
+
+        </div>
+        </div>
+      </div>
+    </div>
+      <div class="col-12 mx-auto ">
+        <div class="row">
+      <!-- <div class="card col-sm-12">
+        <div class=" card-body">
+          <div class="container p-3">
+          <p class="card-text"><b>Owned by:</b> <%= listing.owner.username %></p>
+          <p class="card-text"><b>Price:</b> <%= listing.price.toLocaleString("en-IN") %></p>
+
+          
+        </div>
+        </div>
+      </div> -->
+      <!-- <div class="card col-sm-12 mt-3 p-4">
+        <div class="card-body d-flex align-items-center justify-content-between">
+          <div class="d-flex align-items-center my-2">
+           
+            <% if ( listing.owner.image) { %>
+              <img src="<%= listing.owner.image.url %>" alt="Profile Image" class="profile-img rounded-circle">
+            <% } else { %>
+              <i class="fas fa-user-circle fa-3x me-2 "></i>
+            <% } %>
+            
+           
+            <span class="fs-5 ms-3"><strong><%= listing.owner.username %></strong></span>
+          </div>
+        </div>
+        <a href="/listings/<%= listing.owner._id %>/listingsownerprofile" class="btn btn-primary my-3">See Profile</a>
+
+      </div>
+      <div class="card col-sm-12 mt-3 p-4">
+        <div class="card-body d-flex align-items-center justify-content-between">
+          <div class="d-flex align-items-center my-2">
+           
+            <% if ( listing.owner.image) { %>
+              <img src="<%= listing.owner.image.url %>" alt="Profile Image" class="profile-img rounded-circle">
+            <% } else { %>
+              <i class="fas fa-user-circle fa-3x me-2 ms-3 "></i>
+            <% } %>
+            
+           
+            <span class="fs-5"><strong>+91 XXXXX-XXXXX</strong></span>
+          </div>
+        </div>-->
+      
+
+      <div class="card col-sm-6 mt-3 p-4 ">
+        <div class="card-body d-flex align-items-center justify-content-between">
+          <div class="d-flex align-items-center my-2">
+            <!-- Font Awesome Person Icon -->
+            <!-- Logo Text -->
+            <span class="fs-5"><strong>View More Scholarship Posted by <%= listing.owner.username %></strong></span>
+          </div>
+        </div>
+        <a href="/listings/<%= listing._id %>/SellerItems" class="btn btn-primary my-3">View More Scholarship</a>
+
+      </div>
+      
+      
+      <div class="card col-sm-6 mt-3">
+        <div class=" card-body">
+          <div class="container p-3">
+            <!-- <p class="card-text"><b>Complete Address:</b> <%= listing.address %></p> -->
+            <p class="card-text"><b>Contact Address:</b> <%= listing.location %></p>
+            <b>Contact Us if any Query:</b>
+            <div class="d-flex justify-content-between">
+          
+              <a href="https://wa.me/91<%= listing.owner.phone %>" target="_blank" class="btn btn-success my-3 text-center align-items-center d-flex justify-content-center me-2">
+                <i class="fa-brands fa-whatsapp fa-2x"></i><h4>WhatsAPP</h4>
+              </a>
+          
+             
+              <a href="tel:+91<%= listing.owner.phone %>" class="btn btn-primary my-3 text-center align-items-center d-flex justify-content-center">
+                <i class="fas fa-phone fa-2x"></i><h4>Call Now</h4>
+              </a>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+<div class="container">
+  <!-- Review Form -->
+  <div class="review-section mb-4">
+    <h5 class="mb-3">Leave a Review</h5>
+    <form action="/listings/<%= listing._id %>/reviews" method="POST" novalidate class="needs-validation">
+      <div class="mb-3">
+        <label for="rating" class="form-label">Rating</label>
+        <fieldset class="starability-grow">
+          <input type="radio" id="rate1" name="review[rating]" value="1" checked/>
+          <label for="rate1" title="Terrible">1 star</label>
+          <input type="radio" id="rate2" name="review[rating]" value="2" />
+          <label for="rate2" title="Not good">2 stars</label>
+          <input type="radio" id="rate3" name="review[rating]" value="3" />
+          <label for="rate3" title="Average">3 stars</label>
+          <input type="radio" id="rate4" name="review[rating]" value="4" />
+          <label for="rate4" title="Very good">4 stars</label>
+          <input type="radio" id="rate5" name="review[rating]" value="5" />
+          <label for="rate5" title="Amazing">5 stars</label>
+        </fieldset>
+      </div>
+      <div class="mb-3">
+        <label for="comment" class="form-label">Comments</label>
+        <textarea id="comment" name="review[comment]" placeholder="Add your comments here..." class="form-control" required></textarea>
+        <div class="invalid-feedback">
+          Comments are required before submitting.
+        </div>
+      </div>
+      <button class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+
+
+  <div class="container my-4">
+    <!-- Reviews Display -->
+    <div class="reviews-list mt-4">
+      <h5 class="text-center mb-4">All Reviews</h5>
+      <% if (listing.reviews.length === 0) { %>
+        <p class="text-center">No reviews yet.</p>
+      <% } %>
+      <div class="row">
+        <% for (review of listing.reviews) { %>
+          <div class="col-12 mb-4">
+            <div class="review-card col-6 offset-3">
+              <div class="align-items-start">
+                <!-- Profile Image and Username -->
+                <div class="me-3 d-flex ">
+                  <% if (review.author.image) { %>
+                    <img src="<%= review.author.image.url %>" alt="Profile Image" class="profile-img rounded-circle">
+                  <% } else { %>
+                    <i class="fas fa-user-circle fa-3x me-2"></i>
+                  <% } %>
+                  <h5 class="mb-3 ms-3"><%= review.author.username %></h5>
+                </div>
+                <div class="me-3">
+                  
+                  <p class="mb-3 align-items-start ">
+                    <span class="starability-result" data-rating="<%= review.rating %>"></span>
+                  </p><br><br>
+                  <div class="comment text-start">
+                    <p><%= review.comment %></p>
+                  </div>
+                </div>
+                <% 
+                  const date = new Date(review.createdAt);
+                  const day = date.getDate().toString().padStart(2, '0');
+                  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                  const year = date.getFullYear();
+                  const hours = date.getHours().toString().padStart(2, '0');
+                  const minutes = date.getMinutes().toString().padStart(2, '0');
+                  const seconds = date.getSeconds().toString().padStart(2, '0');
+                  const formattedDate = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+                %>
+                <div class="date text-end">
+                  <p><%= formattedDate %></p>
+                </div>
+              </div>
+              <div class="review-comment mt-3">
+                <% if(currUser && currUser._id.equals(review.author._id)) { %>
+                  <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST" class="d-inline">
+                    <button class="btn btn-danger btn-sm">Delete</button>
+                  </form>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        <% } %>
       </div>
     </div>
   </div>
-<% if(currUser && currUser._id.equals(listing.owner._id))  {%>
-<div class=" container row text-center d-flex align-items-center justify-content-around ">
-
-  <div class="col-4  px-2 " >
-    <a href="/listings/<%= listing._id %>/edit" style="margin-left: 7rem; height: 100%; width: 80px; "class="btn btn-dander btn-danger px-2">Edit</a>
 </div>
-<div class="col-4 ">
-    <form method="POST" action="/listings/<%=listing._id%>?_method=DELETE">
-      <button class="btn btn-dark">Delete</button>
-    </form>
-</div>   
-</div> 
-<% }%>
+  <script>
+  let slideIndex = 1;
+showSlides(slideIndex);
 
-<hr>
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
 
-   <div class="col-10  offset-1">
-      <h5>Leave a Review</h5>
-      <form action="/listings/<%= listing._id %>/reviews" method="POST" novalidate class="needs-validation">
-        <div class="my-3">
-          <label for="rating" class="form-label">Rating</label>
-          <fieldset class="starability-grow">
-            <input type="radio" id="rate1" name="review[rating]" value="1" checked/>
-            <label for="rate1" title="Terrible">1 star</label>
-        
-            <input type="radio" id="rate2" name="review[rating]" value="2" />
-            <label for="rate2" title="Not good">2 stars</label>
-        
-            <input type="radio" id="rate3" name="review[rating]" value="3" />
-            <label for="rate3" title="Average">3 stars</label>
-        
-            <input type="radio" id="rate4" name="review[rating]" value="4" />
-            <label for="rate4" title="Very good">4 stars</label>
-        
-            <input type="radio" id="rate5" name="review[rating]" value="5" />
-            <label for="rate5" title="Amazing">5 stars</label>
-          </fieldset>
-        </div>
-        
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
 
-        <div class="my-3">
-          <label for="comment" class="form-label">Comments</label>
-          <textarea id="comment" 
-                    name="review[comment]" 
-                    placeholder="Comments" 
-                    style="border: none; border-bottom: 1px solid black; outline: none; resize: none; height: 30px; text-decoration: none; box-shadow: none; border-radius: 0 !important;" 
-                    class="form-control " required></textarea>
-                  <div class="invalid-feedback">
-                    Comments is Required before Submit
-                  </div>
+function showSlides(n) {
+  let i;
+  let slides = document.getElementsByClassName("mySlides");
+  let dots = document.getElementsByClassName("demo");
+  let captionText = document.getElementById("caption");
+  if (n > slides.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+  }
+  for (i = 0; i < dots.length; i++) {
+    dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block";
+  dots[slideIndex-1].className += " active";
+  captionText.innerHTML = dots[slideIndex-1].alt; // Show the title
+}
 
-      </div>
-      
-      <button class="btn btn-outline-dark my-3">Submit</button>
-      </form>
-         
-      <hr>
-      <br>
-    </div>
-    <div class="col-12 my-3 offset-1 row d-flex ">
-      <p class="text-center"><b>All Reviews</b></p>
-      
-      <% for (review of listing.reviews){ %>
+</script>
 
-        <div class="card col-md-5 mx-2 my-2" style="border: 1px solid black !important; border: 15px;">
-          <div class="card-body p-2">
-            <h5 class="card-title"><%= review.author.username%></h5>
-            <p class="card-text"><%= review.comment  %> </p>
-            <p class="card-text"><p class="starability-result" data-rating="<%= review.rating  %>"></p>  
-            <div class="d-flex justify-content-between ">
-              <% if(currUser && currUser._id.equals(review.author._id))  {%>
-              <form action="/listings/<%= listing._id%>/reviews/<%= review._id%>?_method=DELETE" method="POST">
-                <BUTTON class="card-link btn btn-danger">Delete</BUTTON> 
-              </form> 
-              <%} %>
-            </div>
-          </div>
-
-        </div>
-        <% } %>
-      </ul>
-    </div>
-
-  

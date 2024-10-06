@@ -1,12 +1,48 @@
-<% if(success && success.length){ %>
-<div class="alert mt-2 alert-success alert-dismissible fade show flash-message" role="alert">
-    <%= success %>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-<% } %>
-<% if(error && error.length){ %>
-    <div class="alert mt-2 alert-danger alert-dismissible fade show flash-message" role="alert">
-        <%= error %>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+<style>
+    .flash-message-container {
+        position: fixed; /* Fix it at the top of the viewport */
+        top: 120px;
+        left: 50;
+        width: 100%;
+        z-index: 1050; /* Make sure it's above other content */
+        padding: 0;
+        margin: 0;
+        display: flex;
+        justify-content: center; /* Center the flash message */
+    }
+
+    .flash-message {
+        transition: opacity 0.5s ease, max-height 0.5s ease;
+        opacity: 0;
+        max-height: 0;
+        overflow: hidden;
+        background-color: #000; /* Black background */
+        color: #fff; /* White text */
+        border: none;
+        margin: 0;
+        padding: 1rem;
+        border-radius: 0.25rem; /* Optional: Rounded corners */
+    }
+
+    .flash-message.show {
+        opacity: 1;
+        max-height: 100px; /* Adjust based on content size */
+    }
+
+
+</style>
+
+<div class="flash-message-container">
+    <% if(success && success.length){ %>
+    <div class="alert alert-dismissible fade show bg-success flash-message show" role="alert">
+        <%= success %>
+       
     </div>
     <% } %>
+    <% if(error && error.length){ %>
+    <div class="alert alert-dismissible fade show flash-message show" role="alert">
+        <%= error %>
+        
+    </div>
+    <% } %>
+</div>

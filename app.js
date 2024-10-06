@@ -7,19 +7,25 @@ const mongoose = require("mongoose");
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate =require("ejs-mate");
-//const MONGO_URL = "mongodb://127.0.0.1:27017/apnacollege";
+const MONGO_URL = "mongodb://127.0.0.1:27017/SIH";
 const wrapAsync =require("./utils/wrapAsync.js");
 const ExpressError =require("./utils/ExpressError.js");
 const listingRouter =require("./routes/listing.js");
 const reviewRouter =require("./routes/review.js");
 const userRouter =require("./routes/user.js");
 const session = require("express-session");
-const MongoStore = require("connect-mongo");
+//const MongoStore = require("connect-mongo");
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
+const userRoutes = require('./routes/user.js');
 const User = require("./models/user.js");
+const Listing = require("./models/listings.js");
+const passportConfig = require('./passport');
 const dbUrl = process.env.ATLASDB_URL;
+const applyRoutes = require('./routes/apply.js'); // Adjust path if needed
+
+
 main()
   .then(() => {
     console.log("connected to DB");
@@ -29,7 +35,7 @@ main()
   });
 
 async function main() {
-  await mongoose.connect(dbUrl);
+  await mongoose.connect(MONGO_URL);
 }
 
 app.set("view engine", "ejs");
@@ -42,20 +48,19 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // session
 
-const store = MongoStore.create({
-  mongoUrl:dbUrl,
-  crypto:{
-    secret:process.env.SECRET,
-  },
-  touchAfter:24*3600,
-});
+// const store = MongoStore.create({
+//   mongoUrl:dbUrl,
+//   crypto:{
+//     secret:process.env.SECRET,
+//   },
+//   touchAfter:24*3600,
+// });
 
-store.on("error",()=>{
-  console.log("ERROR in MONGO SESSION STORE",err);
-});
+// store.on("error",()=>{
+//   console.log("ERROR in MONGO SESSION STORE",err);
+// });
 
 const sessionOptions ={
-  store,
   secret:process.env.SECRET,
   resave:false,
   saveUninitialized:true,
@@ -68,11 +73,10 @@ const sessionOptions ={
 app.use(session(sessionOptions));
 app.use(flash());
 
+
+passportConfig(passport);
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
 
 app.use((req,res,next)=>{
   res.locals.success=req.flash("success");
@@ -91,15 +95,19 @@ app.use((req,res,next)=>{
 // });
 
 app.get("/",wrapAsync( async (req, res,next) => {
-  res.render("listings/home.ejs");
+  const allListings = await Listing.find({});
+    
+  res.render("listings/index.ejs", { allListings });
 }));
 
 // route for listigs
 app.use("/listings", listingRouter);
+app.use('/', userRoutes);
 // Route for review
 
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
+app.use("/", applyRoutes);
 
 app.all("*",(req,res,next)=>{
   next(new ExpressError(404,"Page not found !"));
@@ -109,6 +117,6 @@ app.use((err,req,res,next)=>{
   res.status(statuscode).render("error.ejs",{message});
 });
 
-app.listen(8081, () => {
-  console.log("server is listening to port 8081");
+app.listen(8082, () => {
+  console.log("server is listening to port 8082");
 });

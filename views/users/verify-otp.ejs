@@ -1,0 +1,16 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="body bg-light d-flex justify-content-center" >
+
+<div class="bod text-center bg-white mt-5 p-5 " style="height: 30%; width: 30%; border-radius: 15px; box-shadow: 12px gray; align-items: center;">
+
+
+    <form action="/verify-otp" method="POST">
+        <label for="email" class="form-label">Your Email : </label>
+        <input  id="otp-email" name="email" value="<%= email %>" class="form-control "readonly>
+      <label for="otp" class="form-label mt-3">Enter OTP:</label>
+      <input type="text" id="otp" name="otp" class="form-control" required>
+      <button type="submit" class="btn btn-success px-5 py-2 mt-3">Verify OTP</button>
+    </form>
+  </div>
+</div>

@@ -20,4 +20,30 @@ router.route("/login")
 
 router.get("/logout",userController.logout);  
 
+
+
+// Verify OTP Route
+
+router.route('/verify-otp')
+  .get((req, res) => {
+    res.render('users/verify-otp', { email: req.query.email });
+  })
+  .post(wrapAsync(userController.verifyOTP));
+
+
+// Forgot Password
+router.route('/forgot-password')
+  .get(userController.forgotPasswordForm)
+  .post(wrapAsync(userController.postForgotPassword));
+
+// Verify OTP for Password Reset
+router.route('/verify-reset-otp')
+  .get(userController.verifyResetOTPForm)
+  .post(wrapAsync(userController.postVerifyResetOTP));
+
+// Reset Password
+router.route('/reset-password/:token')
+  .get(wrapAsync(userController.resetPasswordForm))
+  .post(wrapAsync(userController.postResetPassword));
+
 module.exports =router;

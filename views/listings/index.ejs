@@ -1,24 +1,336 @@
 <% layout("layouts/boilerplate") %>
 
-    <h2 class="my-3  d-flex justify-content-center align-items-center">All Listings</h2>
-    <!-- <form method="GET" action="/listings/new">
-      <button>Create New Listing</button>
-    </form> -->
-    <div class="row row-cols-lg-3 row-cols-md-3 row-cols-sm-2 row-cols-xsm-1 ">
-      <% for(let listing of allListings) { %>  
-        <a href="/listings/<%= listing._id %>" class="text-decoration-none">
-        <div class="card mb-5">
-          <img src="<%= listing.image.url %>" class="card-img-top" alt="image" style="height: 20rem;">
-          <div class="card-img-overlay">a</div>
-          <div class="card-body">
-            <p class="card-text">
-             <b> <%= listing.title %> </b><br>
-              <%= listing.price.toLocaleString("en-IN") %> /night
-            </p>
-          </div>
-        </div>
-      </a>
-      <% } %>
-    </div>
+<style>
+    body {
+        /* background: linear-gradient(135deg, #e08105,#f4f6f4, #11dc36); */
+        background: linear-gradient(to right, #f7fafc, #e2e6f3);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
+    .container {
+        margin-top: 2rem;
+    }
+
+    .carousel-container {
+        position: relative;
+        overflow: hidden;
+        
+    }
+
+    .carousel-image {
+        width: 100%;
+        height: 100%;
+        /* object-fit: cover; */
+        transition: opacity 1s ease-in-out;
+    }
+
+    .carousel-slide {
+        position: absolute;
+        
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+    }
+
+    .carousel-slide.active {
+        opacity: 1;
+    }
+
+    .card {
+        position: relative;
+        border-radius: 0.75rem;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+        background-color: #fff;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-img-top {
+        object-fit: cover;
+        height: 20rem; /* Adjust height as needed */
+    }
+
+    .card-body {
+        padding: 1.25rem;
+        flex: 1;
+    }
+
+    .card-text {
+        font-size: 1.1rem;
+        color: #333;
+    }
+
+    .card-img-overlay {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 0.75rem;
+    }
+
+    .title {
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+
+    .price {
+        font-size: 1.1rem;
+        color: #007bff;
+    }
+
+    .carousel-slide {
+        height: 40vh;
+        width: 100%;
+    }
+
+    .carousel-container img {
+        width: 100%;
+        height: 100%;
+    }
+    .animated-text {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s ease-out forwards;
+}
+
+/* Keyframes for the text animation */
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Text Styling */
+@media (max-width: 991px) {
+    .text-section h1 {
+        font-size: 40px; /* Adjust font size for medium devices */
+    }
+
+    .text-section h3 {
+        font-size: 24px;
+    }
+
+    .btn {
+        font-size: 18px; /* Slightly smaller button text on medium devices */
+    }
+}
+
+@media (max-width: 767px) {
+    .text-section h1 {
+        font-size: 34px; /* Adjust font size for small devices */
+    }
+
+    .text-section h3 {
+        font-size: 20px;
+    }
+
+    .btn {
+        font-size: 16px; /* Smaller button text on small devices */
+    }
+
+    img {
+        width: 100%; /* Ensure image takes full width on smaller screens */
+    }
+}
+
+@media (max-width: 576px) {
+    .text-section h1 {
+        font-size: 30px; /* Smaller font size for extra small devices */
+    }
+
+    .text-section h3 {
+        font-size: 18px;
+    }
+
+    .btn {
+        font-size: 14px; /* Adjust button size for extra small devices */
+    }
+
+    img {
+        width: 100%;
+    }
+}
+</style>
+<div class="container-fluid " style="background: linear-gradient(to right, #f7fafc, #e2e6f3); min-height: 100vh; margin-top: -25px;">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- Text Section -->
+            <div class="col-lg-6  text-section">
+                <div class="mt-5">
+                    <h4 class="display-4 fw-bold lh-base animated-text" style="color: #2a6496; font-size: 52px;">
+                        Empower Your Future with a Scholarship for a Brighter Tomorrow</span>
+                    </h4>
+                    
+                    <h5 class="mt-3 text-muted">
+                        <span id="animated-thought" class="dynamic-text" style="color: #0c0c0c; font-size: 30px;">
+                            Building Dreams for the Underprivileged
+                        </span>
+                    </h5>
+                    <p class="mt-3 text-muted">
+                        Join our mission to support deserving students and unlock the doors to a better future through education.
+                    </p>
+                    <br>
+                    <a href="/apply">
+                        <button type="button" class="btn btn-primary p-3 px-5" style="font-size: 20px; font-weight: 500; background-color: #2a6496; border: none;">
+                            Apply for Scholarship >
+                        </button>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Image Section -->
+            <div class="col-lg-6 mt-5 text-center">
+                <img class="img-fluid" src="/1111.png" alt="Scholarship Image" style="border-radius: 20px;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CSS for responsiveness and animations -->
+
+
+
+
+
+
+<!-- <div class="container-fluid ">
     
+   
+    <div class="carousel-container " style="height: 500px; position: relative;">
+        <div class="carousel-slide active " style="height: 400px;">
+            <img src="/modi1.jpg" class="carousel-image" alt="Slide 1">
+        </div>
+        <div class="carousel-slide" style="height: 400px;">
+            <img src="/modi2.jpeg" class="carousel-image" alt="Slide 2">
+        </div>
+        <div class="carousel-slide" style="height: 400px;">
+            <img src="/modi3.webp" class="carousel-image" alt="Slide 3">
+        </div>
+        <div class="carousel-slide" style="height: 400px;">
+            <img src="/modi4.jpg" class="carousel-image" alt="Slide 3">
+        </div>
+    </div>
+</div> -->
+    <div class="container">
+    <!-- Listings Grid -->
+    <div id="listing-container" class="row g-3" style="position: relative;">
+        <% for(let listing of allListings) { %>  
+        <div class="text-decoration-none col-12  col-md-6 col-lg-6">
+            <div class="card mb-4">
+                <img src="<%= listing.images[0]?.url || '/default-image.jpg' %>" class="card-img-top" alt="image">
+                <div class="card-body">
+                    <p class="card-text">
+                        <h6 class="title px-3 "><%= listing.title %></h6>
+                        <p class=" px-3 price"><strong>Scholarship Amount :</strong><%= listing.price.toLocaleString("en-IN") %> /month</p>
+                        <p class=" px-3 card-text"> <%= listing.category %></p>
+                        <span class=" px-3"><%= listing.location%> , <%= listing.country %></span>
+                        <% 
+                        const date = new Date(listing.createdAt1);
+                        const day = date.getDate().toString().padStart(2, '0');
+                        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                        const year = date.getFullYear();
+                       
+                        const formattedDate = `${day}/${month}/${year}`;
+                      %>
+                      <div class="date text-end me-3 mt-2">
+                        <p>Posted on : <%= formattedDate %></p>
+                      </div>
+                    </p>
+                    <div class="d-grid">
+                        
+                        <a href="/listings/<%= listing._id %>" class=" mx-3  btn btn-outline-primary" >Apply Now</a>
+                       
+                    </div>
+                </div>
+               
+            </div>
+
+        </div>
+        <% } %>
+    </div>
+</div>
+</div>
+
+</div>
+
+<script>
+    // Carousel Animation
+    let currentIndex = 0;
+    const slides = document.querySelectorAll('.carousel-slide');
+    const totalSlides = slides.length;
+
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+            slide.classList.toggle('active', i === index);
+        });
+    }
+
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) % totalSlides;
+        showSlide(currentIndex);
+    }
+
+    setInterval(nextSlide, 3000); // Change slide every 3 seconds
+
+
+   
+</script>
+<script>
+    const thoughts = [
+        'Building Dreams for the Underprivileged',
+        'Empowering the Next Generation',
+        'Creating a Brighter Tomorrow'
+    ];
+
+    let currentThought = 0;
+    const animatedText = document.getElementById('animated-thought');
+
+    function typewriterEffect() {
+        let currentText = thoughts[currentThought];
+        let charIndex = 0;
+        animatedText.textContent = '';
+
+        const typingInterval = setInterval(() => {
+            animatedText.textContent += currentText[charIndex];
+            charIndex++;
+
+            if (charIndex === currentText.length) {
+                clearInterval(typingInterval);
+
+                // Erase the text after a delay
+                setTimeout(eraseEffect, 2000);
+            }
+        }, 100); // Speed of typing
+    }
+
+    function eraseEffect() {
+        let currentText = animatedText.textContent;
+        let charIndex = currentText.length;
+
+        const erasingInterval = setInterval(() => {
+            animatedText.textContent = currentText.substring(0, charIndex - 1);
+            charIndex--;
+
+            if (charIndex === 0) {
+                clearInterval(erasingInterval);
+
+                // Move to the next thought and restart typing
+                currentThought = (currentThought + 1) % thoughts.length;
+                setTimeout(typewriterEffect, 500);
+            }
+        }, 50); // Speed of erasing
+    }
+
+    // Start the typing effect on page load
+    setTimeout(typewriterEffect, 500);
+</script>
+
+
+
